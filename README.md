@@ -1,38 +1,35 @@
-# Bastion
+# Bastion för Windows
 
-Bastion är ett multiplattformsprojekt med en delad Swift-baserad SSH-kärna och separata applikationsytor för Apple-plattformar, Android, Linux och Windows.
+**Dokumentation:** [pissmyran.github.io/bastion_windows](https://pissmyran.github.io/bastion_windows/)
 
-## Struktur
+Bastion är en SSH-klient. Det här repot innehåller versionen för Windows med WinUI, byggd med C#, .NET, WinUI och SSH.NET. Övriga plattformar har egna repon: [Bastion för Apple](https://github.com/pissmyran/bastion_apple), [Bastion för Linux](https://github.com/pissmyran/bastion_linux), [Bastion för Android](https://github.com/pissmyran/bastion_android).
 
-| Område | Plats | Teknik |
-| --- | --- | --- |
-| delad SSH-kärna + CLI | `Sources/`, `Tests/`, `Package.swift` | Swift / SwiftNIO |
-| iOS, macOS, tvOS | `App/` | Swift / XcodeGen |
-| Android | `Android/` | Kotlin / Gradle |
-| Linux | `LinuxApp/` | Rust |
-| Windows | `WindowsApp/` | .NET |
+## Innehåll
 
-## Snabb verifiering
+| Plats | Innehåll |
+| --- | --- |
+| `WindowsApp/Bastion.Core/` | Kärnan: sessioner, värdlista, synk, kryptering och verktyg |
+| `WindowsApp/Bastion.Core.Tests/` | Tester för kärnan, med en egen kopia av synkfixturen |
+| `WindowsApp/` (rot) | WinUI-appen: `App.xaml`, `MainWindow.xaml` och `WindowsApp.csproj` |
 
-Swift-kärnan:
+## Kom igång
+
+Testa kärnan (fungerar på Linux, macOS och Windows):
 
 ```bash
-swift test
+dotnet test WindowsApp/Bastion.Core.Tests
 ```
 
-Övriga plattformar har egna bygg- och verifieringsflöden; se **[dokumentationsöversikten](docs/index.md)**.
+Bygg appen (bara på Windows):
 
-## Dokumentation
+```bash
+dotnet build WindowsApp/WindowsApp.csproj
+```
 
-Den publicerade dokumentationssajten är `https://docs.bastion.denied.se`. Källan är alltid repositoryts versionsstyrda `docs/`, och stable dokumentation byggs från samma Git-tagg som Bastions GitHub Release.
+Kärnan och testerna riktar sig mot plattformsoberoende .NET och kan testas överallt. WinUI-appen kräver Windows.
 
-- [Dokumentationsöversikt](docs/index.md)
-- [Projektkontext](docs/project-context.md) — plattformar och bygginvarianter
-- [Arkitektur](docs/architecture.md) — komponentgränser och delad kärna
-- [Drift och verifiering](docs/operations.md) — plattformsspecifika kontroller
-- [Release- och versionsstandard](docs/release-standard.md) — SemVer, PR-titlar och releasegränser
-- [SECURITY.md](SECURITY.md) — säkerhetsrapportering
+## Mer
 
-## Viktig Apple-invariant
-
-`App/Package.swift` är manifestet som dependency automation kan läsa. `App/generate-project.sh` läser dependencyversioner därifrån och matar dem vidare till XcodeGen. Generera därför inte Bastions Apple-projekt med en direkt `xcodegen generate --spec App/project.yml` om det kringgår wrappern.
+- [Dokumentationen](https://pissmyran.github.io/bastion_windows/) – kom igång, arkitektur, drift, synkformat och release
+- [SECURITY.md](SECURITY.md) – rapportera en sårbarhet
+- [CONTRIBUTING.md](CONTRIBUTING.md) – bidra
