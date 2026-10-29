@@ -134,3 +134,26 @@ List secret scanning alerts:
 ```sh
 gh api repos/pissmyran/bastion_windows/secret-scanning/alerts
 ```
+## Token optimizer
+
+- **What it is:** the platform-skills token optimizer runs in audit mode. `.token-optimizer.yaml` holds the settings, `.token-optimizer/optimize.sh` is the hook script and `.claude/agents/platform-bulk-reader.md` is the cheap reader agent.
+- **What it does:** a `PreToolUse` hook in `.claude/settings.json` logs oversized reads, and shell calls it cannot classify, to `.token-optimizer/decisions.log` (git-ignored). The log never holds command text. The hook never blocks a read.
+- **Requirements:** `jq` and mikefarah `yq` v4 (the Python `yq` does not work). Create the git-ignored state directory once with `mkdir -p .token-optimizer/state`.
+- **Local changes:** `optimize.sh` differs from the skill's original in two places: it never writes command text to the log, and it replaces control characters and caps field length in `log_line`. The hook command starts from `$CLAUDE_PROJECT_DIR`. Reapply these if the script is updated from the skill.
+- **Changing it:** switch `mode` to `redirect` only after `.token-optimizer/probe/run-probe.sh` has verified delegation. Set `enabled: false` to turn it off.
+
+## GitHub from a session
+
+GraphQL is disabled, so `gh pr` and `gh issue` do not work. Use REST:
+
+- Open a PR: `gh api repos/pissmyran/bastion_windows/pulls -f base=main -f head=<branch> -f title='…' -f body='…'`
+- PR from a branch: `gh api 'repos/pissmyran/bastion_windows/pulls?head=pissmyran:<branch>&state=open'`
+- Issue: `gh api repos/pissmyran/bastion_windows/issues/<n>` and `…/issues/<n>/comments`
+- Review threads: `gh api repos/pissmyran/bastion_windows/pulls/<n>/ccr/review_threads`
+- Reply in a thread: `gh api repos/pissmyran/bastion_windows/pulls/<n>/comments/<id>/replies -f body='…'`
+- Resolve a thread: `gh api -X POST repos/pissmyran/bastion_windows/pulls/<n>/ccr/comments/<id>/resolve`
+- Checks: `gh api repos/pissmyran/bastion_windows/commits/<sha>/check-runs`
+- Enable auto-merge: `gh api -X PUT repos/pissmyran/bastion_windows/pulls/<n>/ccr/auto_merge -f merge_method=squash`
+- If the PR is already mergeable (auto-merge is then refused), squash-merge directly: `gh api -X PUT repos/pissmyran/bastion_windows/pulls/<n>/merge -f merge_method=squash`
+- Close a PR: `gh api -X PATCH repos/pissmyran/bastion_windows/pulls/<n> -f state=closed`
+- Delete a branch: GitHub deletes the branch on merge. A closed PR's branch is deleted with `git push origin --delete <branch>` (the API route is blocked).
