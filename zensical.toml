@@ -1,7 +1,7 @@
 [project]
-site_name = "Bastion för Windows"
+site_name = "Bastion for Windows"
 site_url = "https://pissmyran.github.io/bastion_windows/"
-site_description = "SSH-klienten för Windows, med en .NET-kärna och ett WinUI-gränssnitt."
+site_description = "The SSH client for Windows, with a .NET core and a WinUI interface."
 repo_url = "https://github.com/pissmyran/bastion_windows"
 repo_name = "pissmyran/bastion_windows"
 edit_uri = "edit/main/docs/"
@@ -9,24 +9,24 @@ docs_dir = "docs"
 site_dir = "site"
 copyright = "Bastion – Apache-2.0"
 nav = [
-  { "Start" = "index.md" },
-  { "Kom igång" = "kom-igang.md" },
-  { "Arkitektur" = "arkitektur.md" },
-  { "Drift och verifiering" = "drift.md" },
-  { "Synkformat" = "synkformat.md" },
-  { "Release" = "release.md" },
+  { "Home" = "index.md" },
+  { "Getting started" = "getting-started.md" },
+  { "Architecture" = "architecture.md" },
+  { "Operations" = "operations.md" },
+  { "Sync format" = "sync-format.md" },
+  { "Releases" = "release.md" },
 ]
 extra_css = [
   "stylesheets/extra.css",
 ]
 
 [project.extra]
-platform = "Windows med WinUI"
-tagline = "SSH-klienten för Windows, med en .NET-kärna och ett WinUI-gränssnitt."
+platform = "Windows with WinUI"
+tagline = "The SSH client for Windows, with a .NET core and a WinUI interface."
 
 [project.theme]
 variant = "modern"
-language = "sv"
+language = "en"
 custom_dir = "overrides"
 logo = "assets/bastion.svg"
 favicon = "assets/bastion.svg"
@@ -52,7 +52,7 @@ features = [
 [[project.theme.palette]]
 media = "(prefers-color-scheme)"
 toggle.icon = "lucide/sun-moon"
-toggle.name = "Följ systemets tema"
+toggle.name = "Follow the system theme"
 
 [[project.theme.palette]]
 media = "(prefers-color-scheme: light)"
@@ -60,7 +60,7 @@ scheme = "default"
 primary = "black"
 accent = "deep orange"
 toggle.icon = "lucide/sun"
-toggle.name = "Byt till mörkt tema"
+toggle.name = "Switch to dark mode"
 
 [[project.theme.palette]]
 media = "(prefers-color-scheme: dark)"
@@ -68,4 +68,4 @@ scheme = "slate"
 primary = "black"
 accent = "deep orange"
 toggle.icon = "lucide/moon"
-toggle.name = "Byt till systemets tema"
+toggle.name = "Switch to the system theme"
