@@ -6,3 +6,7 @@
 site/
 WindowsApp/**/bin/
 WindowsApp/**/obj/
+.token-optimizer/decisions.log
+.token-optimizer/state/
+.token-optimizer/probe/
+!.token-optimizer/optimize.sh
