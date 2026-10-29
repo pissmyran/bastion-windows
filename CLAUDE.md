@@ -44,7 +44,7 @@ The core and its tests target cross-platform .NET and can be tested anywhere. Th
 
 ## Rules for this repo
 
-- **Language:** everything in this repo is English: code, comments, docstrings, documentation, PR titles and bodies, commit messages, review replies and labels. Only the core rules block above stays in Swedish. Older code still has Swedish comments and UI text; translate them when you touch the file.
+- **Language:** everything in this repo is English: code, comments, docstrings, documentation, PR titles and bodies, commit messages, review replies and labels. Only the core rules block above stays in Swedish. Older code still has Swedish comments and UI text; write every new or changed comment and string in English.
 - **The sync format is owned by Bastion for Apple.** The fixture in `Bastion.Core.Tests` is a copy; follow `docs/sync-format.md` when the format changes.
 - **The WinUI app cannot be built on Linux.** Test the core locally and say in the PR that the app could not be built.
 - **NuGet:** the cloud session's proxy may refuse `api.nuget.org`. If `dotnet test` cannot run, say so in the PR instead of silently skipping the tests.

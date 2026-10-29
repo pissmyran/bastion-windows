@@ -67,6 +67,8 @@ reviews:
         tag or digest. Validation must not confuse the formats.
         On key deploy, existing authorized_keys must be kept.
         Check idempotence and verification with the new key.
+        When process execution changes, check concurrent draining
+        of stdout and stderr so full pipe buffers never block the process.
 
     # Publishing releases.
     - path: ".github/{workflows/release.yml,scripts/semantic_release.py,scripts/wait_for_checks.py,release-baseline,release-required-checks}"
