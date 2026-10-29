@@ -1,35 +1,35 @@
-# Bastion för Windows
+# Bastion for Windows
 
-**Dokumentation:** [pissmyran.github.io/bastion_windows](https://pissmyran.github.io/bastion_windows/)
+**Documentation:** [pissmyran.github.io/bastion_windows](https://pissmyran.github.io/bastion_windows/)
 
-Bastion är en SSH-klient. Det här repot innehåller versionen för Windows med WinUI, byggd med C#, .NET, WinUI och SSH.NET. Övriga plattformar har egna repon: [Bastion för Apple](https://github.com/pissmyran/bastion_apple), [Bastion för Linux](https://github.com/pissmyran/bastion_linux), [Bastion för Android](https://github.com/pissmyran/bastion_android).
+Bastion is an SSH client. This repo holds the version for Windows with WinUI, built with C#, .NET, WinUI and SSH.NET. The other platforms have their own repos: [Bastion for Apple](https://github.com/pissmyran/bastion_apple), [Bastion for Linux](https://github.com/pissmyran/bastion_linux), [Bastion for Android](https://github.com/pissmyran/bastion_android). The [Bastion hub](https://github.com/pissmyran/bastion) ties them together.
 
-## Innehåll
+## Contents
 
-| Plats | Innehåll |
+| Path | Contents |
 | --- | --- |
-| `WindowsApp/Bastion.Core/` | Kärnan: sessioner, värdlista, synk, kryptering och verktyg |
-| `WindowsApp/Bastion.Core.Tests/` | Tester för kärnan, med en egen kopia av synkfixturen |
-| `WindowsApp/` (rot) | WinUI-appen: `App.xaml`, `MainWindow.xaml` och `WindowsApp.csproj` |
+| `WindowsApp/Bastion.Core/` | The core: sessions, host list, sync, encryption and tools |
+| `WindowsApp/Bastion.Core.Tests/` | Tests for the core, with its own copy of the sync fixture |
+| `WindowsApp/` (root) | The WinUI app: `App.xaml`, `MainWindow.xaml` and `WindowsApp.csproj` |
 
-## Kom igång
+## Getting started
 
-Testa kärnan (fungerar på Linux, macOS och Windows):
+Test the core (works on Linux, macOS and Windows):
 
 ```bash
 dotnet test WindowsApp/Bastion.Core.Tests
 ```
 
-Bygg appen (bara på Windows):
+Build the app (Windows only):
 
 ```bash
 dotnet build WindowsApp/WindowsApp.csproj
 ```
 
-Kärnan och testerna riktar sig mot plattformsoberoende .NET och kan testas överallt. WinUI-appen kräver Windows.
+The core and its tests target cross-platform .NET and can be tested anywhere. The WinUI app needs Windows.
 
-## Mer
+## More
 
-- [Dokumentationen](https://pissmyran.github.io/bastion_windows/) – kom igång, arkitektur, drift, synkformat och release
-- [SECURITY.md](SECURITY.md) – rapportera en sårbarhet
-- [CONTRIBUTING.md](CONTRIBUTING.md) – bidra
+- [The documentation](https://pissmyran.github.io/bastion_windows/): getting started, architecture, operations, sync format and releases
+- [SECURITY.md](SECURITY.md): report a vulnerability
+- [CONTRIBUTING.md](CONTRIBUTING.md): contribute
