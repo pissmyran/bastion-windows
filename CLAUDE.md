@@ -4,7 +4,13 @@
 
 Guidance for Claude Code in `pissmyran/bastion_windows`: Bastion for Windows, the SSH client for Windows with WinUI, built with C#, .NET, WinUI and SSH.NET. The other platforms have their own repos: [Bastion for Apple](https://github.com/pissmyran/bastion_apple), [Bastion for Linux](https://github.com/pissmyran/bastion_linux), [Bastion for Android](https://github.com/pissmyran/bastion_android).
 
-The shared rules for all repos live in [GOVERNANCE.md](https://github.com/pissmyran/.github/blob/main/GOVERNANCE.md) in `pissmyran/.github`. The core rules below are a verbatim copy, compared character by character with the source. Compare the version in the marker with the source at the start of every session (`curl -sS https://raw.githubusercontent.com/pissmyran/.github/main/GOVERNANCE.md`); if the copy is older, update it first in a separate PR (`docs: sync core rules from .github`).
+The shared rules for all repos live in [GOVERNANCE.md](https://github.com/pissmyran/.github/blob/main/GOVERNANCE.md) in `pissmyran/.github`. The core rules below are a verbatim copy. At the start of every session, compare the version in the marker with the source:
+
+```sh
+curl -fsS https://raw.githubusercontent.com/pissmyran/.github/main/GOVERNANCE.md
+```
+
+If the copy is older, update it first in a separate PR (`docs: sync core rules from .github`).
 
 ## Core rules
 
@@ -48,7 +54,7 @@ The core and its tests target cross-platform .NET and can be tested anywhere. Th
 - **Language:** everything in this repo is English: code, comments, docstrings, documentation, PR titles and bodies, commit messages, review replies and labels. Older code still has Swedish comments and UI text; write every new or changed comment and string in English.
 - **The sync format is owned by Bastion for Apple.** The fixture in `Bastion.Core.Tests` is a copy; follow `docs/sync-format.md` when the format changes.
 - **The WinUI app cannot be built on Linux.** Test the core locally and say in the PR that the app could not be built.
-- **NuGet:** the cloud session's proxy may refuse `api.nuget.org`. If `dotnet test` cannot run, say so in the PR instead of silently skipping the tests.
+- **NuGet:** the sandbox network policy may refuse `api.nuget.org`. If `dotnet test` cannot run, say so in the PR instead of silently skipping the tests.
 - **The documentation** is a Zensical site: `docs/`, `zensical.toml` and the home page template in `overrides/home.html`. Build it locally with `pip install --upgrade zensical` and `zensical build --strict`. New pages go into `nav` in `zensical.toml`.
 - **The release** is driven by the PR titles and the checks in `.github/release-required-checks`; see `docs/release.md`.
 
@@ -59,6 +65,75 @@ The core and its tests target cross-platform .NET and can be tested anywhere. Th
 - **Sourcery and Codex:** also review, as GitHub apps without their own configuration here, and they review documentation too. Treat their threads like CodeRabbit's.
 - **Extra care:** host key verification, sync format and encryption, commands built for remote systems.
 
+## GitHub from the sandbox
+
+The sandbox injects the agent's fine-grained token for `github.com` and `api.github.com`, so `git` and `gh` work as usual. The token reaches only this agent's repositories.
+
+Open a pull request:
+
+```sh
+gh pr create --base main --title '<title>' --body '<body>'
+```
+
+Show the checks on a pull request:
+
+```sh
+gh pr checks <n>
+```
+
+List the inline review comments (each `id` is used for replies):
+
+```sh
+gh api repos/pissmyran/bastion_windows/pulls/<n>/comments
+```
+
+Reply to a review comment:
+
+```sh
+gh api repos/pissmyran/bastion_windows/pulls/<n>/comments/<id>/replies -f body='<reply>'
+```
+
+List the review threads with their node IDs (`id`) and first comment:
+
+```sh
+gh api graphql -f query='query { repository(owner: "pissmyran", name: "bastion_windows") { pullRequest(number: <n>) { reviewThreads(first: 100) { nodes { id isResolved comments(first: 1) { nodes { databaseId body } } } } } } }'
+```
+
+Resolve a review thread, using the thread's node ID, not the comment ID:
+
+```sh
+gh api graphql -f query='mutation($id: ID!) { resolveReviewThread(input: {threadId: $id}) { thread { isResolved } } }' -f id='<thread-id>'
+```
+
+Enable auto-merge and delete the branch after merge:
+
+```sh
+gh pr merge <n> --auto --squash --delete-branch
+```
+
+Close a pull request and delete its branch:
+
+```sh
+gh pr close <n> --delete-branch
+```
+
+List Dependabot alerts:
+
+```sh
+gh api repos/pissmyran/bastion_windows/dependabot/alerts
+```
+
+List code scanning alerts:
+
+```sh
+gh api repos/pissmyran/bastion_windows/code-scanning/alerts
+```
+
+List secret scanning alerts:
+
+```sh
+gh api repos/pissmyran/bastion_windows/secret-scanning/alerts
+```
 ## Token optimizer
 
 - **What it is:** the platform-skills token optimizer runs in audit mode. `.token-optimizer.yaml` holds the settings, `.token-optimizer/optimize.sh` is the hook script and `.claude/agents/platform-bulk-reader.md` is the cheap reader agent.
