@@ -28,6 +28,10 @@ dotnet build WindowsApp/WindowsApp.csproj
 
 The core and its tests target cross-platform .NET and can be tested anywhere. The WinUI app needs Windows.
 
+## Review configuration
+
+CodeRabbit inherits shared defaults from [pissmyran/coderabbit](https://github.com/pissmyran/coderabbit). Repository-specific guidance lives in [.coderabbit.yaml](.coderabbit.yaml). Comment `@coderabbitai configuration` on the pull request to inspect the resolved settings; see [verification steps](docs/operations.md#coderabbit-configuration).
+
 ## More
 
 - [The documentation](https://pissmyran.github.io/bastion_windows/): getting started, architecture, operations, sync format and releases

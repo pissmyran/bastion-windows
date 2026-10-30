@@ -29,3 +29,7 @@ dotnet build WindowsApp/WindowsApp.csproj
 - **The WinUI app cannot be built on Linux.** Test the core.
 - **The fixture** in `Bastion.Core.Tests` is a copy of the sync format owned by `bastion_apple`.
 - **Extra care:** host key verification, sync format and encryption, commands built for remote systems.
+
+## Review configuration
+
+CodeRabbit inherits [pissmyran/coderabbit/.coderabbit.yaml](https://github.com/pissmyran/coderabbit/blob/main/.coderabbit.yaml); [.coderabbit.yaml](.coderabbit.yaml) adds Windows-specific review guidance and cross-platform context. Read the matching path instructions before changing those files. Use `@coderabbitai configuration` on the pull request and follow [docs/operations.md](docs/operations.md#coderabbit-configuration) to verify the resolved settings and source access.

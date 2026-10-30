@@ -23,6 +23,20 @@ dotnet build WindowsApp/WindowsApp.csproj
 - **The release** waits for the checks in `.github/release-required-checks`; see [Releases](release.md).
 
 
+## CodeRabbit configuration
+
+The central source is [pissmyran/coderabbit/.coderabbit.yaml](https://github.com/pissmyran/coderabbit/blob/main/.coderabbit.yaml). The repository's [.coderabbit.yaml](https://github.com/pissmyran/bastion_windows/blob/main/.coderabbit.yaml) uses `inheritance: true` and adds Windows-specific path instructions, explicit governance sources and linked Bastion repositories.
+
+Before delivery, validate the complete YAML against the [current CodeRabbit schema](https://coderabbit.ai/integrations/schema.v2.json), rejecting duplicate keys. Check schema types and instruction length limits, and confirm every local path pattern matches the intended repository files. Arrays merge by key: local entries replace matching parent entries (for example, the same `path`); unique parent entries remain. Check that the merged configuration retains the shared scanners, advisory checks and disabled paid write features without changing approval settings.
+
+After delivery, comment on the pull request:
+
+```text
+@coderabbitai configuration
+```
+
+Inspect CodeRabbit's resolved configuration to confirm the central source, shared scanners, advisory checks and disabled paid write features remain present. Verify unique parent array entries remain and only matching keyed entries are replaced. Confirm CodeRabbit can access the explicit governance files and linked repositories; a configured link alone does not prove access. Record unavailable sources and any verification that could not run. Local schema validation does not establish the service's resolved configuration or repository access.
+
 ## Security rules
 
 - Private keys, tokens and passwords never go into the repo, logs or test data.
