@@ -1,11 +1,13 @@
 # yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
 
+# Shared defaults: pissmyran/coderabbit/.coderabbit.yaml
+# Keep only repository-specific settings here.
 inheritance: true
 
 reviews:
   path_instructions:
     # SSH trust and authentication.
-    - path: "WindowsApp/Bastion.Core/{KnownHosts,SshSession,HostAuth}.cs"
+    - path: "WindowsApp/Bastion.Core/{KnownHosts,SshSession,HostAuth,SftpBrowserSession}.cs"
       instructions: |
         When host key verification or authentication changes, check
         that TOFU still distinguishes the first connection from a changed
@@ -83,3 +85,75 @@ reviews:
         published again with different content.
         Check stable versions, rc and promote against the parser
         and existing release anchors without bypassing the check gate.
+
+    - path: "WindowsApp/Bastion.Core/SshAgent.cs"
+      instructions: |
+        When agent message parsing changes, check frame lengths, identity
+        counts, integer conversions and remaining bytes before allocation
+        or slicing. Reject malformed or truncated responses.
+        When signing changes, verify the SSH.NET boundary receives the
+        SSH-encoded signature blob, not only raw signature bytes.
+        Check resource cleanup on protocol errors and cancellation.
+        Use SshAgentTests for regression evidence.
+
+    - path: "WindowsApp/*.{cs,xaml}"
+      instructions: |
+        When WinUI behavior changes, check that UI updates occur on the
+        UI thread and that network operations do not block that thread.
+        Trace window and session closure through pending callbacks.
+        Prevent callbacks from updating disposed or replaced UI state.
+        When terminal or WebView2 integration changes, trace untrusted
+        remote output across script, navigation and host-message boundaries.
+        Remote output must not gain unintended host capabilities.
+
+    - path: "WindowsApp/**/*.csproj"
+      instructions: |
+        When project configuration changes, preserve the separation between
+        the Windows-only WinUI app and the cross-platform core and tests.
+        Check that the app excludes nested core and test source files from
+        its default compilation glob and references the core project.
+        Check target-framework compatibility across project references.
+        When terminal content paths change, verify copied assets and their
+        runtime lookup paths agree.
+        EnableWindowsTargeting permits restore; it does not establish that
+        the WinUI app can build on Linux.
+
+    - path: "WindowsApp/Bastion.Core.Tests/**"
+      instructions: |
+        When tests change, exercise the real core behavior and the changed
+        failure paths. Keep tests runnable without WinUI.
+        For SSH integration tests, inspect server and proxy cleanup,
+        bounded waits and isolation between tests.
+        The sync fixture is a copy of the format owned by bastion_apple.
+        Require an upstream format basis for fixture changes; do not
+        regenerate expected data merely to make an assertion pass.
+
+knowledge_base:
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - "**/AGENTS.md"
+      - "pissmyran/.github:GOVERNANCE.md"
+      - "pissmyran/.github:BASTION.md"
+
+  linked_repositories:
+    - repository: pissmyran/bastion
+      instructions: |
+        Shared Bastion documentation and cross-platform coordination.
+        Check relevant shared behavior and documentation changes.
+
+    - repository: pissmyran/bastion_apple
+      instructions: |
+        Owns the shared sync format and upstream fixtures.
+        Compare relevant model, serialization and encryption changes.
+        Windows fixtures are copies, not the format authority.
+
+    - repository: pissmyran/bastion_linux
+      instructions: |
+        Compare shared sync, encryption and SSH behavior when relevant.
+        Do not require identical platform feature support.
+
+    - repository: pissmyran/bastion_android
+      instructions: |
+        Compare shared sync and encryption compatibility when relevant.
+        Do not require identical platform feature support.
